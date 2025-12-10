@@ -29,3 +29,29 @@ shadowJar {
     archiveClassifier = ''
     archiveVersion = ''
 }
+
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'org.example'
+            artifactId = 'todo-app'
+            version = project.version
+            // Публикуем fat JAR
+            artifact(tasks.shadowJar) {
+                classifier = null
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Tasmaniya/todo-app")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}

@@ -45,6 +45,34 @@ public class TodoApp {
                     }
                     if (all.isEmpty()) System.out.println("(empty)");
                     break;
+                case "clear":
+                    list.clear();
+                    System.out.println("All tasks cleared.");
+                    break;
+                case "done":
+                    if (parts.length > 1) {
+                        try {
+                            int idx = Integer.parseInt(parts[1]);
+                            if (list.markDone(idx)) System.out.println("Task marked as done.");
+                            else System.out.println("Index out of range.");
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid index.");
+                        }
+                    }
+                    break;
+                case "search":
+                    if (parts.length > 1) {
+                        List<String> results = list.search(parts[1]);
+                        if (results.isEmpty()) {
+                            System.out.println("No tasks found.");
+                        } else {
+                            System.out.println("Found tasks:");
+                            for (String res : results) {
+                                System.out.println("  - " + res);
+                            }
+                        }
+                    }
+                    break;
                 case "exit":
                     System.out.println("Bye!");
                     scanner.close();
